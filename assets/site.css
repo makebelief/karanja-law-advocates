@@ -140,3 +140,67 @@ header .brand-words em{color:#aa7625;font-size:10px;letter-spacing:2px;}
 @media(max-width:1199px){header .brand{width:215px;flex-basis:215px;}header .brand img{width:61px;height:61px;flex-basis:61px;}header .brand-words strong{font-size:11px;}}
 @media(max-width:650px){header .brand{width:220px;flex-basis:220px;}header .brand img{width:59px;height:59px;flex-basis:59px;}header .brand-words strong{font-size:12px;}}
 @media(max-width:360px){header .brand{width:190px;flex-basis:190px;}header .brand-words strong{font-size:11px;}}
+
+
+/* ===============================================================
+   2026-10-12: image-ratio correction, Home + About.
+   External stock photos are naturally different dimensions.
+   Their width/height HTML attributes are intrinsic size hints,
+   not forced browser dimensions: use a responsive box + object-fit.
+   Never stretch either axis independently.
+   =============================================================== */
+/* Homepage: landscape editorial images, not 620px-tall squeezed photos. */
+.insight-grid .insight-card > img {
+  display:block;
+  flex:0 0 auto;
+  align-self:stretch;
+  width:100%;
+  height:auto;
+  aspect-ratio: 8 / 5;
+  max-width:100%;
+  object-fit:cover;
+  object-position:center 30%;
+}
+/* About page: prevent the HTML height attribute from keeping the
+   800px intrinsic height as the image shrinks to a grid column. */
+.editorial-grid .editorial-photo {
+  width:100%;
+  min-width:0;
+  overflow:hidden;
+}
+.editorial-grid .editorial-photo > img {
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:5 / 4;
+  object-fit:cover;
+  object-position:center 30%;
+}
+.about-bottom-grid > img {
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:auto;
+  aspect-ratio: 4 / 3;
+  object-fit:cover;
+  object-position:center;
+}
+/* Explicit protection for the portrait and homepage photo blocks.
+   Their crop containers retain the original established design. */
+.about-grid .about-art > img,
+.advocate-feature-grid .advocate-feature-photo > img {
+  max-width:100%;
+  object-fit:cover;
+}
+/* Avoid oversized cards or overflowing images on narrow phones. */
+.insight-grid,.insight-card,.editorial-grid,.editorial-photo,
+.about-bottom-grid,.about-bottom-grid > img {min-width:0;}
+@media (max-width:650px) {
+  .insight-grid .insight-card > img {aspect-ratio: 16 / 10;}
+  .editorial-grid .editorial-photo > img {aspect-ratio:4 / 3;}
+  .about-bottom-grid > img {aspect-ratio: 4 / 3;}
+}
+/* Keep CSS grid tracks flexible even before external image downloads finish. */
+.about-grid > *, .about-bottom-grid > *, .editorial-grid > *,
+.insight-grid > *, .advocate-feature-grid > * {min-width:0;}
+.about-grid .about-art {max-width:100%;}
